@@ -8,13 +8,57 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      backgroundColor: {
+        '0D9488': '#0D9488',
+
+        '248EE3': '#248EE3',
+
+        '1A34C7' : '#1A34C7',
+
+        '1A69C6': '#1A69C6',
+
+        '008C83': '#008C83',
+
+        '023535': '#023535',
+
+        '015958': '#015958',
+
+        '008F8C': '#008F8C',
+
+        '7CF5D4': '#7CF5D4'
+      },
+      borderColor: {
+        '008C83': '#008C83',
+
+        '023535': '#023535',
+
+        '015958': '#015958',
+
+        '008F8C': '#008F8C',
+
+        '0D9488': '#0D9488',
+      },
+      textColor: {
+        '0D9488': '#0D9488',
+
+        '023535': '#023535',
+
+        '015958': '#015958',
+
+        '008C83': '#008C83',
+
+        '008F8C': '#008F8C',
+
+        '0C5E58': '#0C5E58',
+      },
+      fontFamily: {
+        custom: ['SofiaSans', 'sans-serif'],
+        custom2: ['Inter', 'sans-serif'],
       },
     },
   },
+  variants: {},
   plugins: [],
-}
+};
+
 export default config
