@@ -6,6 +6,8 @@ import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft } from "react-feather";
+import VLibras from '@moreiraste/react-vlibras';
+
 
 export default function EditarCandidato() {
   //seta router como a função da rota
@@ -37,24 +39,25 @@ export default function EditarCandidato() {
     }));
   };
 
+  
+
   // informações para ataualizar o perfil do candidato
   const [formPerfilCandidato, setFormPerfilCandidato] = useState({
     NomeCompleto: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    cpf: "",
-    dataDeNascimento: "",
-    cidade: "",
-    uf: "",
-    deficiencia: "",
-    formacao: "",
-    experiencias: "",
-    habilidades: "",
-    telefone: "",
-    genero: "",
-    bairro: "",
-    competencia: "",
+    Email: "",
+    Senha: "",
+    confirmSenha: "",
+    CPF: "",
+    DataNasc: "",
+    Cidade: "",
+    Estado: "",
+    Bairro: "",
+    Deficiencia: "",
+    Formacao: "",
+    ExpAnteriores: "",
+    Habilidades: "",
+    Telefone: "",
+    Genero: "",
   });
 
   //variavel token
@@ -72,7 +75,7 @@ export default function EditarCandidato() {
     };
 
       const response = await axios.put(
-        `http://10.5.9.20:38000/api/v1/candidatos/${Token}/updateCandidato`,
+        `http://192.168.0.13:38000/api/v1/candidatos/${Token}/updateCandidato`,
         formPerfilCandidato, config
       );
       if (response.status === 200) {
@@ -91,6 +94,13 @@ export default function EditarCandidato() {
   };
 
   return (
+    <> 
+    <div className="App">
+      <VLibras forceOnload={true} />
+      <header className="App-header">
+      </header>
+    </div>
+
     <div className="min-h-screen flex items-center justify-center bg-0D9488">
       <div className="bg-white p-8 rounded-lg shadow-md w-1/2">
         <h1 className="text-2xl font-semibold text-008C83 mb-6">
@@ -98,30 +108,8 @@ export default function EditarCandidato() {
         </h1>
         <br />
         <form onSubmit={atualizarPerfilCandidato}>
-          <div className="mb-4">
-            <p className="text-4x4 font-bold mb-0 text-008C83">
-              {" "}
-              Foto de perfil{" "}
-            </p>
-            <br />
-            <div className="relative w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-              {/* Adicione um ícone de perfil (por exemplo, uma imagem) aqui */}
-              <Image
-                src="sua_imagem_de_perfil.jpg"
-                alt="Imagem de Perfil"
-                className="object-cover w-full h-full"
-              />
-            </div>
-            <input
-              type="file"
-              id="FotoPerfil"
-              name="FotoPerfil"
-              accept="image/*"
-              className="w-full mt-2"
-            />
-          </div>
         </form>
-        <hr className="my-6 border-2 border-008C83" />
+        <hr className="my-4 border-2 border-008C83" />
 
         <form
           className="grid grid-cols-2 gap-4"
@@ -147,9 +135,9 @@ export default function EditarCandidato() {
             </label>
             <input
               type="email"
-              id="email"
-              name="email"
-              value={formPerfilCandidato.email}
+              id="Email"
+              name="Email"
+              value={formPerfilCandidato.Email}
               onChange={atualizarForm}
               className="w-full border rounded px-3 py-2"
             />
@@ -160,10 +148,10 @@ export default function EditarCandidato() {
               CPF:
             </label>
             <input
-              type="number"
-              id="cpf"
-              name="cpf"
-              value={formPerfilCandidato.cpf}
+              type="text"
+              id="CPF"
+              name="CPF"
+              value={formPerfilCandidato.CPF}
               onChange={atualizarForm}
               className="w-full border rounded px-3 py-2"
             />
@@ -175,9 +163,9 @@ export default function EditarCandidato() {
             </label>
             <input
               type="text"
-              id="telefone"
-              name="telefone"
-              value={formPerfilCandidato.telefone}
+              id="Telefone"
+              name="Telefone"
+              value={formPerfilCandidato.Telefone}
               onChange={atualizarForm}
               className="w-full border rounded px-3 py-2"
             />
@@ -227,9 +215,9 @@ export default function EditarCandidato() {
               Gênero
             </label>
             <select
-              id="genero"
-              name="genero"
-              value={formPerfilCandidato.genero}
+              id="Genero"
+              name="Genero"
+              value={formPerfilCandidato.Genero}
               onChange={atualizarFormSelect}
               className="w-full border rounded px-3 py-2"
             >
@@ -241,14 +229,14 @@ export default function EditarCandidato() {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="deficiencia" className="text-0C5E58 block mb-1">
+            <label htmlFor="Deficiencia" className="text-0C5E58 block mb-1">
               Deficiência:
             </label>
             <input
               type="text"
-              id="deficiencia"
-              name="deficiencia"
-              value={formPerfilCandidato.deficiencia}
+              id="Deficiencia"
+              name="Deficiencia"
+              value={formPerfilCandidato.Deficiencia}
               onChange={atualizarForm}
               className="w-full border rounded px-3 py-2"
             />
@@ -260,22 +248,22 @@ export default function EditarCandidato() {
             </label>
             <input
               type="date"
-              id="dataDeNascimento"
-              name="dataDeNascimento"
-              value={formPerfilCandidato.dataDeNascimento}
+              id="DataNasc"
+              name="DataNasc"
+              value={formPerfilCandidato.DataNasc}
               onChange={atualizarForm}
               className="w-full border rounded px-3 py-2"
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="uf" className="text-0C5E58 block mb-1">
+            <label htmlFor="Estado" className="text-0C5E58 block mb-1">
               Selecione o estado:
             </label>
             <select
-              id="uf"
-              name="uf"
-              value={formPerfilCandidato.uf}
+              id="Estado"
+              name="Estado"
+              value={formPerfilCandidato.Estado}
               onChange={atualizarFormSelect}
               className="w-full border rounded px-3 py-2"
             >
@@ -311,28 +299,28 @@ export default function EditarCandidato() {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="cidade" className="text-0C5E58 block mb-1">
+            <label htmlFor="Cidade" className="text-0C5E58 block mb-1">
               Cidade:
             </label>
             <input
               type="text"
-              id="cidade"
-              name="cidade"
-              value={formPerfilCandidato.cidade}
+              id="Cidade"
+              name="Cidade"
+              value={formPerfilCandidato.Cidade}
               onChange={atualizarForm}
               className="w-full border rounded px-3 py-2"
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="bairro" className="text-0C5E58 block mb-1">
+            <label htmlFor="Bairro" className="text-0C5E58 block mb-1">
               Bairro:
             </label>
             <input
               type="text"
-              id="bairro"
-              name="bairro"
-              value={formPerfilCandidato.bairro}
+              id="Bairro"
+              name="Bairro"
+              value={formPerfilCandidato.Bairro}
               onChange={atualizarForm}
               className="w-full border rounded px-3 py-2"
             />
@@ -351,9 +339,9 @@ export default function EditarCandidato() {
               Formação:
             </label>
             <select
-              id="formacao"
-              name="formacao"
-              value={formPerfilCandidato.formacao}
+              id="Formacao"
+              name="Formacao"
+              value={formPerfilCandidato.Formacao}
               onChange={atualizarFormSelect}
               className="w-full border rounded px-3 py-2"
             >
@@ -378,13 +366,13 @@ export default function EditarCandidato() {
           <br />
 
           <div className="mb-4">
-            <label htmlFor="deficiencia" className="text-0C5E58 block mb-1">
+            <label htmlFor="ExpAnteriores" className="text-0C5E58 block mb-1">
               Experiências anteriores:
             </label>
             <textarea
-              id="experiencias"
-              name="experiencias"
-              value={formPerfilCandidato.experiencias}
+              id="ExpAnteriores"
+              name="ExpAnteriores"
+              value={formPerfilCandidato.ExpAnteriores}
               onChange={atualizarFormTextarea}
               className="w-full h-32 p-2 rounded-lg border focus:outline-none focus:ring focus:border-blue-300"
             >
@@ -393,13 +381,13 @@ export default function EditarCandidato() {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="deficiencia" className="text-0C5E58 block mb-1">
+            <label htmlFor="Habilidades" className="text-0C5E58 block mb-1">
               Habilidades e conhecimentos:
             </label>
             <textarea
-              id="habilidades"
-              name="habilidades"
-              value={formPerfilCandidato.habilidades}
+              id="Habilidades"
+              name="Habilidades"
+              value={formPerfilCandidato.Habilidades}
               onChange={atualizarFormTextarea}
               className="w-full h-32 p-2 rounded-lg border focus:outline-none focus:ring focus:border-blue-300"
             ></textarea>
@@ -424,5 +412,6 @@ export default function EditarCandidato() {
         </div>
       </div>
     </div>
+    </>
   );
 }

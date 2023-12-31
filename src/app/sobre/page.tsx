@@ -4,12 +4,20 @@ import Image from "../../../node_modules/next/image";
 import negocio from "/public/images/negocio.png";
 import sistema from "/public/images/sistema.png";
 import imagem from "/public/images/imagem.png";
-import Rodape from "../../components/commons/rodape";
 import Header from "../../components/commons/header";
+import VLibras from '@moreiraste/react-vlibras';
+
 
 export default function Sobre() {
   return (
     <>
+
+<div className="App">
+      <VLibras forceOnload={true} />
+      <header className="App-header">
+      </header>
+    </div>
+
       <Header />
 
       <h1 className="font-bold text-teal-600 text-3xl text-center py-12">
@@ -58,7 +66,6 @@ export default function Sobre() {
         </div>
       </div>
 
-      <Rodape />
     </>
   );
 }

@@ -1,14 +1,23 @@
 "use client";
 
-import Rodape from "@/components/commons/rodape";
 import Logo from "/public/images/Logo.png";
 import Image from "../../node_modules/next/image";
 import Link from "../../node_modules/next/link";
 import Navbar from "@/components/commons/headerHome";
+import VLibras from '@moreiraste/react-vlibras'
+
 
 export default function Home() {
   return (
     <>
+
+<div className="App">
+      <VLibras forceOnload={true} />
+      <header className="App-header">
+      </header>
+    </div>
+
+
       <Navbar />
       <main>
         <h1 className="font-bold text-teal-600 text-3xl text-center py-9">
@@ -106,7 +115,6 @@ export default function Home() {
         <br />
         <br />
 
-        <Rodape />
       </main>
     </>
   );

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://10.5.9.20:38000", // Defina a base URL de acordo com sua API
+  baseURL: "http://192.168.0.13:38000", // Defina a base URL de acordo com sua API
 });
 
 api.interceptors.request.use(
@@ -11,7 +11,7 @@ api.interceptors.request.use(
 
     if (token) {
       // Adicione o token JWT ao cabeçalho de autorização
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.authorization = "Empcd";
     }
 
     return config;

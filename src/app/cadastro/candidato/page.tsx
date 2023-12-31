@@ -7,13 +7,21 @@ import Logo from "/public/images/empcdlogo.svg";
 import Link from "next/link";
 import { ArrowLeft } from "react-feather";
 import api from "@/api/cadastro-interceptor";
+import VLibras from "@moreiraste/react-vlibras";
+import ValidaCpf from "@/components/ValidaCpf";
 
 export default function CadastroCandidato() {
   //Após o cadastro e o login envia para outra pagina
   const router = useRouter();
 
+  //seta o estado do CPF para valido ao inicio do formulário
+  const [cpfValido, setCpfValido] = useState(true);
+
   //seta o erroDeSenha como falso no inicio da pagina
   const [erroDeSenha, setErroDeSenha] = useState(false);
+
+  //seta o estado de ver a senha como falso
+  const [mostrarSenha, setMostrarSenha] = useState(false);
 
   //Faz com que o Termos de Uso seja obrigatorio
   const [termosAceitos, settermosAceitos] = useState(false);
@@ -48,6 +56,13 @@ export default function CadastroCandidato() {
   // atualiza as informações dos campos do formularios, guarda e envia para o backend
   const atualizarForm = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    if (name === "CPF") {
+      // Verifica se o CPF é válido
+      const cpfEhValido = ValidaCpf(value);
+      setCpfValido(cpfEhValido);
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -77,31 +92,43 @@ export default function CadastroCandidato() {
       try {
         const config = {
           headers: {
-            "authorization": "Empcd",
+            authorization: "Empcd",
           },
         };
-        const response = await api.post("/api/v1/candidatos/signUp", formData, config);
+        const response = await api.post(
+          "/api/v1/candidatos/signUp",
+          formData,
+          config
+        );
 
         if (response.data) {
           console.log("Dados enviados:", response.data);
           setError(false);
+
           //apos o cadastro feito, faz o login direto
           try {
-            const response = await api.post("/api/v1/candidatos/login", {
-              Email,
-              Senha,
-            }, {
-              headers: {
-                // Adicione aqui o cabeçalho personalizado para a candidato
-                "authorization": "Empcd",
-              },});
+            const response = await api.post(
+              "/api/v1/candidatos/login",
+              {
+                Email,
+                Senha,
+              },
+              {
+                headers: {
+                  // Adicione aqui o cabeçalho personalizado para a candidato
+                  authorization: "Empcd",
+                },
+              }
+            );
             const token = response.data.token;
-            localStorage.setItem("jwtToken", token.token);
+            console.log(token);
+            localStorage.setItem("jwtToken", token.Token);
             if (response.data.token.validation) {
               router.push("/candidato");
               console.log("Dados enviados");
             } else {
               console.log("Email ou senha incorretos");
+
               setError(true);
             }
           } catch (error) {}
@@ -118,6 +145,11 @@ export default function CadastroCandidato() {
 
   return (
     <>
+      <div className="App">
+        <VLibras forceOnload={true} />
+        <header className="App-header"></header>
+      </div>
+
       <div className="flex flex-col md:flex-row min-h-screen">
         <div className="w-full md:w-1/2 bg-0D9488 md:block hidden">
           <Image
@@ -187,8 +219,15 @@ export default function CadastroCandidato() {
                   value={formData.CPF}
                   onChange={atualizarForm}
                   required
-                  className="w-full border rounded px-3 py-2"
+                  className={`w-full border rounded px-3 py-2 ${
+                    cpfValido ? "" : "border-red-500"
+                  }`}
                 />
+                {!cpfValido && (
+                  <p className="text-red-500">
+                    CPF inválido. Por favor, insira um CPF válido.
+                  </p>
+                )}
               </div>
 
               <div className="mb-4">
@@ -207,12 +246,12 @@ export default function CadastroCandidato() {
                 />
               </div>
 
-              <div className="mb-4">
-                <label htmlFor="senha" className="text-0C5E58 block mb-1">
+              <div className="mb-4 relative">
+                <label htmlFor="Senha" className="text-0C5E58 block mb-1">
                   Senha:
                 </label>
                 <input
-                  type="password"
+                  type={mostrarSenha ? "text" : "password"}
                   id="Senha"
                   name="Senha"
                   placeholder="Insira a senha"
@@ -221,14 +260,24 @@ export default function CadastroCandidato() {
                   required
                   className="w-full border rounded px-3 py-2"
                 />
+                <button
+                  type="button"
+                  className="absolute top-2 right-2 text-gray-500"
+                  onClick={() => setMostrarSenha(!mostrarSenha)}
+                >
+                  {mostrarSenha ? "Ocultar" : "Mostrar"}
+                </button>
               </div>
 
-              <div className="mb-4">
-                <label htmlFor="senha" className="text-0C5E58 block mb-1">
+              <div className="mb-4 relative">
+                <label
+                  htmlFor="confirmarSenha"
+                  className="text-0C5E58 block mb-1"
+                >
                   Confirme sua senha:
                 </label>
                 <input
-                  type="password"
+                  type={mostrarSenha ? "text" : "password"}
                   id="confirmarSenha"
                   name="confirmSenha"
                   placeholder="Confirme a senha"
@@ -237,6 +286,13 @@ export default function CadastroCandidato() {
                   required
                   className="w-full border rounded px-3 py-2"
                 />
+                <button
+                  type="button"
+                  className="absolute top-2 right-2 text-gray-500"
+                  onClick={() => setMostrarSenha(!mostrarSenha)}
+                >
+                  {mostrarSenha ? "Ocultar" : "Mostrar"}
+                </button>
               </div>
 
               {erroDeSenha && (

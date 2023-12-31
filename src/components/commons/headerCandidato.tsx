@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "../../../node_modules/next/image";
 import Link from "../../../node_modules/next/link";
-import LogoMenor from "/public/images/LogoSemFundo.png";
+import LogoMenor from "/public/images/logo.png";
 
 export default function HeaderCandidato() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -58,10 +58,10 @@ export default function HeaderCandidato() {
               </Link>
 
               <Link
-                href="/candidato/configuracao"
+                href="/configuracao"
                 className="text-white hover:bg-015958 active:bg-023535 hover:text-white rounded-md px-3 py-2 text-lg font-medium block"
               >
-                Configuração
+                Configurações
               </Link>
             </div>
           )}
@@ -82,10 +82,10 @@ export default function HeaderCandidato() {
             </Link>
 
             <Link
-              href="/candidato/configuracao"
+              href="/configuracao"
               className="text-white hover:bg-015958 active:bg-023535 hover:text-white rounded-md px-3 py-2 text-lg font-medium block"
             >
-              Configuração
+              Configurações
             </Link>
           </div>
         </div>

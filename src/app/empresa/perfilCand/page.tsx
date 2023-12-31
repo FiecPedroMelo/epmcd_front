@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import Header from "@/components/commons/headerCandidato";
+import Header from "@/components/commons/headerEmpresa";
 import Link from "next/link";
 import { ArrowLeft } from "react-feather";
 import VLibras from '@moreiraste/react-vlibras';
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 
 export default function PerfilCandidato() {
@@ -28,7 +28,12 @@ export default function PerfilCandidato() {
 
   });
 
-  const Token = localStorage.getItem('jwtToken'); 
+  const Token = localStorage.getItem('jwtToken');
+
+  const searchParams = useSearchParams()
+ 
+  const IdCand = searchParams.get('IdCand')
+  console.log(IdCand);
 
   useEffect(() => {
 
@@ -40,7 +45,7 @@ export default function PerfilCandidato() {
 
     // API para pegar as informações do perfil do candidato
     axios
-      .get(`http://192.168.0.13:38000/api/v1/candidatos/${Token}/getById`, config)
+      .get(`http://192.168.0.13:38000/api/v1/empresas/${IdCand}/getById`, config)
       .then((response) => {
         setUser(response.data);
       })
@@ -49,7 +54,12 @@ export default function PerfilCandidato() {
       });
   }, []);
 
-  console.log(Token)
+  const router = useRouter();
+
+    const handleCancelar = () => {
+        // Use a função router.back() para voltar à página anterior
+        router.back();
+      };
 
   return (
     <>
@@ -175,16 +185,11 @@ export default function PerfilCandidato() {
           <div />
 
           <div className="flex justify-between">
-            <Link
-              href="/candidato/editarPerfil"
-              className="bg-0D9488 text-white font-medium px-4 py-2 rounded hover:bg-cyan-600"
-            >
-              Editar Perfil
-            </Link>
-            <Link href="/candidato" className="text-teal-600 hover:underline">
+
+            <button onClick={handleCancelar} className="text-teal-600 hover:underline">
               <ArrowLeft className="inline -ml-1 inline -ml-1 text-base" />{" "}
               Voltar para a Página Anterior
-            </Link>
+            </button>
           </div>
         </div>
       </div>

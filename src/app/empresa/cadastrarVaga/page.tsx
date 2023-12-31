@@ -3,9 +3,10 @@
 import React, { useState } from "react";
 import { useRouter } from "../../../../node_modules/next/navigation";
 import axios from "../../../../node_modules/axios/index";
-import Rodape from "@/components/commons/rodape";
 import HeaderEmpresa from "@/components/commons/headerEmpresa";
 import Link from "next/link";
+import VLibras from '@moreiraste/react-vlibras';
+
 
 export default function CadastrarVaga() {
   // seta a função de rota
@@ -42,7 +43,7 @@ export default function CadastrarVaga() {
   // envia os dados das vagas para o banco de dados
   const enviarDadosParaBancoDeDados = () => {
     console.log(Token);
-    const cadastrar = `http://10.5.9.20:38000/api/v1/empresas/${Token}/createVaga`;
+    const cadastrar = `http://192.168.0.13:38000/api/v1/empresas/${Token}/createVaga`;
     const config = {
       headers: {
         "authorization": "Empcd",
@@ -54,6 +55,7 @@ export default function CadastrarVaga() {
         console.log("Informações enviadas com sucesso:", response.data);
         // Redirecione ou execute alguma ação após o envio bem-sucedido
         // router.push('/descricaoVaga'); Exemplo de redirecionamento
+        router.push('/empresa/vagasEmAndamento');
       })
       .catch((error) => {
         console.error(
@@ -65,6 +67,13 @@ export default function CadastrarVaga() {
 
   return (
     <>
+
+<div className="App">
+      <VLibras forceOnload={true} />
+      <header className="App-header">
+      </header>
+    </div>
+
       <HeaderEmpresa />
 
       <div className="min-h-screen flex items-center justify-center bg-white">
@@ -106,35 +115,22 @@ export default function CadastrarVaga() {
                 className="w-full border rounded px-3 py-2"
               />
             </div>
-            <div className="mb-4">
+ 
+
+          </form>           
+          <div className="mb-4">
               <label htmlFor="Requisitos" className="text-0C5E58 block mb-1">
                 Requisitos:
               </label>
-              <input
-                type="text"
+              <textarea
                 id="Requisitos"
                 name="Requisitos"
                 value={FormCadastroVaga.Requisitos}
-                onChange={atualizarForm}
+                onChange={atualizarFormTextarea}
                 required
                 className="w-full border rounded px-3 py-2"
               />
             </div>
-            {/* <div className="mb-4">
-            <label htmlFor="FaixaSalarial" className="text-0C5E58 block mb-1">
-              Faixa Salarial:
-            </label>
-            <input
-              type="text"
-              id="FaixaSalarial"
-              name="FaixaSalarial"
-              value={FormCadastroVaga.FaixaSalarial}
-              onChange={atualizarForm}
-              required
-              className="w-full border rounded px-3 py-2"
-            />
-          </div> */}
-          </form>
           <div className="mb-4">
             <label htmlFor="Descricao" className="text-0C5E58 block mb-1">
               Descrição da vaga:
@@ -162,7 +158,6 @@ export default function CadastrarVaga() {
           </div>
         </div>
       </div>
-      <Rodape />
     </>
   );
 }

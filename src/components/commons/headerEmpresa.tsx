@@ -63,6 +63,13 @@ export default function HeaderEmpresa() {
               >
                 Cadastrar Vaga
               </Link>
+
+              <Link
+              href="/configuracao"
+              className="text-white hover:bg-015958 active:bg-023535 hover:text-white rounded-md px-3 py-2 text-lg font-medium block"
+            >
+              Configurações
+            </Link>
             </div>
           )}
 
@@ -86,6 +93,13 @@ export default function HeaderEmpresa() {
               className="text-white hover:bg-015958 active:bg-023535 hover:text-white rounded-md px-3 py-2 text-lg font-medium block"
             >
               Cadastrar Vaga
+            </Link>
+
+            <Link
+              href="/configuracao"
+              className="text-white hover:bg-015958 active:bg-023535 hover:text-white rounded-md px-3 py-2 text-lg font-medium block"
+            >
+              Configurações
             </Link>
           </div>
         </div>

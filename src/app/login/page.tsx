@@ -7,6 +7,8 @@ import { useRouter } from "../../../node_modules/next/navigation";
 import axios from "../../../node_modules/axios/index";
 import { ArrowLeft } from "../../../node_modules/react-feather";
 import Link from "../../../node_modules/next/link";
+import VLibras from '@moreiraste/react-vlibras';
+
 
 export default function Login() {
   // seta router como função de rota
@@ -14,6 +16,9 @@ export default function Login() {
   // seta o email como um estado vazio no inicio
   const [Email, setEmail] = useState("");
   // seta o senha como um estado vazio no inicio
+
+    //seta o estado de ver a senha como falso
+    const [mostrarSenha, setMostrarSenha] = useState(false);
 
   const [Senha, setSenha] = useState("");
 
@@ -32,7 +37,7 @@ export default function Login() {
 
     try {
       const responseCandidato = await axios.post(
-        "http://10.5.9.20:38000/api/v1/candidatos/login",
+        "http://192.168.0.13:38000/api/v1/candidatos/login",
         { Email, Senha },
         {
           headers: {
@@ -40,15 +45,16 @@ export default function Login() {
             "authorization": "Empcd",
           },}
       );
-      const tokenCandidato = responseCandidato.data.token;
-      localStorage.setItem("jwtToken", tokenCandidato.token);
+      const tokenCandidato = responseCandidato.data.token
+      console.log(tokenCandidato);
+      localStorage.setItem("jwtToken", tokenCandidato.Token);
       if (responseCandidato.data.token.validation) {
         router.push("/candidato");
         console.log("Dados enviados");
       } else {
         // Caso não seja encontrado candidato com o mesmo token passa para a empresa
         const responseEmpresa = await axios.post(
-          "http://10.5.9.20:38000/api/v1/empresas/login",
+          "http://192.168.0.13:38000/api/v1/empresas/login",
           { Email, Senha },
           {
             headers: {
@@ -56,9 +62,9 @@ export default function Login() {
               "authorization": "Empcd",
             },}
         );
-        const token = responseEmpresa.data.token
-        console.log(token);
-        localStorage.setItem("jwtToken", token.token);
+        const tokenEmpresa = responseEmpresa.data.token
+        console.log(tokenEmpresa);
+        localStorage.setItem("jwtToken", tokenEmpresa.token);
         if (responseEmpresa.data.token.validation) {
           router.push("/empresa");
           console.log("Dados enviados");
@@ -77,6 +83,13 @@ export default function Login() {
 
   return (
     <>
+
+<div className="App">
+      <VLibras forceOnload={true} />
+      <header className="App-header">
+      </header>
+    </div>
+
       <div className="min-h-screen bg-008C83 flex flex-col md:flex-row">
         <div className="w-full md:w-2/4 bg-008C83 md:block hidden">
           <Image
@@ -113,18 +126,29 @@ export default function Login() {
                   className="w-full md:w-96 border rounded px-3 py-2"
                 />
               </div>
-              <div className="mb-4">
+              <div className="mb-4 relative">
                 <label htmlFor="senha" className="block mb-1">
                   Senha:
                 </label>
                 <input
-                  type="password"
+                  type={mostrarSenha ? "text" : "password"}
                   placeholder="Senha"
                   value={Senha}
                   onChange={(e) => setSenha(e.target.value)}
                   className="w-full md:w-96 border rounded px-3 py-2"
                 />
+                <button
+                  type="button"
+                  className="absolute top-2 right-2 text-gray-500"
+                  onClick={() => setMostrarSenha(!mostrarSenha)}
+                >
+                  {mostrarSenha ? "Ocultar" : "Mostrar"}
+                </button>
               </div>
+
+              
+
+
               {error && (
                 <p className="text-red-500">Email ou senha incorretos</p>
               )}

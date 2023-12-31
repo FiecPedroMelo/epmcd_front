@@ -2,8 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
-import Rodape from "@/components/commons/rodape";
 import Header from "@/components/commons/headerEmpresa";
+import VLibras from '@moreiraste/react-vlibras';
+
 
 export default function DashboardEmpresa() {
 
@@ -12,7 +13,11 @@ export default function DashboardEmpresa() {
 
   return (
     <>
-      {/* <HeaderEmpresa /> */}
+      <div className="App">
+      <VLibras forceOnload={true} />
+      <header className="App-header">
+      </header>
+    </div>
 
       <Header />
 
@@ -61,7 +66,6 @@ export default function DashboardEmpresa() {
         </div>
       </div>
 
-      <Rodape />
     </>
   );
 }

@@ -5,10 +5,20 @@ import Link from "../../../node_modules/next/link";
 import empresa from "/public/images/empresa.png";
 import candidato from "/public/images/candidato.png";
 import { ArrowLeft } from "react-feather";
+import VLibras from '@moreiraste/react-vlibras';
+
 
 export default function Cadastro() {
   //Pagina que define qual o tipo de cadastro o usuario vai querer fazer
   return (
+    <> 
+
+<div className="App">
+      <VLibras forceOnload={true} />
+      <header className="App-header">
+      </header>
+    </div>
+
     <div className="min-h-screen flex flex-col justify-center items-center bg-0D9488">
       <h1 className="text-4xl text-white mb-6">
         Escolha o seu tipo de cadastro:
@@ -46,5 +56,6 @@ export default function Cadastro() {
         para a Página Inicial
       </Link>
     </div>
+    </>
   );
 }

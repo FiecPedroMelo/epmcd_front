@@ -5,13 +5,14 @@ import axios from "axios";
 import Image from "next/image";
 import Logo from "/public/images/Logo.png";
 import Link from "next/link";
-import Rodape from "@/components/commons/rodape";
 import Header from "@/components/commons/headerEmpresa";
 import { ArrowLeft } from "react-feather";
+import VLibras from '@moreiraste/react-vlibras';
+
 
 // o que vai ser passado para o card de vaga em andamento da empresa
 interface Job {
-  idVaga: string;
+  IdVaga: string;
   TituloCargo: string;
   NomeFantasia: string;
   DescricaoVaga: string;
@@ -19,7 +20,7 @@ interface Job {
 // card da vaga em andamento da empresa
 
 const Job: React.FC<Job> = ({
-  idVaga,
+  IdVaga,
   TituloCargo,
   NomeFantasia,
   DescricaoVaga,
@@ -28,14 +29,14 @@ const Job: React.FC<Job> = ({
     <div className="max-w-4xl mx-auto my-4">
   <div className="w-3/4 mx-auto bg-slate-100 rounded-lg overflow-hidden shadow-2xl flex">
     <div className="w-3/4 p-4">
-      <Link href={`/empresa/descricaoVaga/${idVaga}`}>
+      <Link href={`/empresa/descricaoVaga?IdVaga=${IdVaga}`}>
         <div className="text-3xl font-bold">{TituloCargo}</div>
       </Link>
       <div className="text-lg text-teal-600">{NomeFantasia}</div>
       <div className="mt-4 text-gray-800"> Descrição: {DescricaoVaga}</div>
 
       <div className="mt-4 flex justify-between">
-        <Link href={`/empresa/relatorioVaga/${idVaga}`} className="justify-end">
+        <Link href={`/empresa/relatorioVaga?IdVaga=${IdVaga}`} className="justify-end">
           <button className="hover:underline bg-0D9488 text-white px-4 py-2 rounded w-1/1 ">
             Ver Relatório de Vagas
           </button>
@@ -61,7 +62,7 @@ export default function VagasFinalizadas() {
     console.log("Token:", Token);
     if (Token) {
       axios
-        .get(`http://10.5.9.20:38000/api/v1/empresas/${Token}/status/false/getStatus`,{
+        .get(`http://192.168.0.13:38000/api/v1/empresas/${Token}/status/false/getStatus`,{
 
             headers: {
             "authorization": "Empcd",
@@ -88,6 +89,13 @@ export default function VagasFinalizadas() {
 
   return (
     <>
+    
+    <div className="App">
+      <VLibras forceOnload={true} />
+      <header className="App-header">
+      </header>
+    </div>
+
       <Header />
 
       <div className="bg-white">
@@ -112,7 +120,6 @@ export default function VagasFinalizadas() {
           </div>
         </main>
       </div>
-      <Rodape />
     </>
   );
 }

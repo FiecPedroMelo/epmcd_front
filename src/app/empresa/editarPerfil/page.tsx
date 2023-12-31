@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
+import VLibras from '@moreiraste/react-vlibras';
+
 
 export default function EditarPerfilEmpresa() {
   //função de rota
@@ -12,16 +14,14 @@ export default function EditarPerfilEmpresa() {
 
   // o que vai ser atualizado no perfil da empresa
   const [formPerfilEmpresa, setFormPerfilEmpresa] = useState({
-    NomeFantasia: "",
+   NomeFantasia: "",
     RazaoSocial: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    cnpj: "",
-    cidade: "",
-    bairro: "",
-    uf: "",
-    descricao: "",
+    Email: "",
+    CNPJ: "",
+    Cidade: "",
+    Bairro: "",
+    UF: "",
+    Descricao: "",
   });
 
   // atualiza as informações dos campos do formularios, guarda e envia para o backend
@@ -41,16 +41,25 @@ export default function EditarPerfilEmpresa() {
     }));
   };
 
+  const Token = localStorage.getItem('jwtToken');
+
   // API que atualiza o perfil da empresa e envia os novos dados para o banco de dados
   const atualizarPerfilEmpresa = async () => {
     try {
-      const response = await axios.put("/api/v1/", formPerfilEmpresa);
+      const config = {
+        headers: {
+          "authorization": "Empcd",
+        },
+      };
+
+      const response = await axios.put(`http://192.168.0.13:38000/api/v1/empresas/${Token}/updateEmpresa`, formPerfilEmpresa, config);
       if (response.status === 200) {
         // Atualização bem-sucedida
         console.log("Perfil atualizado com sucesso:", response.data);
         router.push("/empresa/perfil");
       } else {
         // Tratar erros
+        alert("erro ao atualizar o perfil");
         console.error("Erro ao atualizar perfil");
       }
     } catch (error) {
@@ -59,7 +68,20 @@ export default function EditarPerfilEmpresa() {
     }
   };
 
+  const handleCancelar = () => {
+    // Use a função router.back() para voltar à página anterior
+    router.back();
+  };
+
   return (
+    <> 
+
+<div className="App">
+      <VLibras forceOnload={true} />
+      <header className="App-header">
+      </header>
+    </div>
+
     <div className="min-h-screen flex items-center justify-center bg-0D9488">
       <div className="bg-white p-8 rounded-lg shadow-md w-1/2">
         <h1 className="text-2xl font-semibold text-008C83 mb-6">
@@ -67,27 +89,6 @@ export default function EditarPerfilEmpresa() {
         </h1>
 
         <form onSubmit={atualizarPerfilEmpresa}>
-          <div className="mb-4">
-            <p className="text-4x4 font-bold mb-0 text-008C83">
-              Foto de perfil
-            </p>
-            <div className="relative w-20 h-20 rounded-full overflow-hidden bg-gray-200">
-              {/* Adicione um ícone de perfil (por exemplo, uma imagem) aqui */}
-              <Image
-                src="sua_imagem_de_perfil.jpg"
-                alt="Imagem de Perfil"
-                className="object-cover w-full h-full"
-              />
-            </div>
-            <input
-              type="file"
-              id="FotoPerfil"
-              name="FotoPerfil"
-              accept="image/*"
-              className="w-full mt-2"
-            />
-          </div>
-
           <hr className="my-6 border-2 border-008C83" />
 
           <div className="grid grid-cols-2 gap-4">
@@ -125,23 +126,23 @@ export default function EditarPerfilEmpresa() {
               </label>
               <input
                 type="email"
-                id="email"
-                name="email"
-                value={formPerfilEmpresa.email}
+                id="Email"
+                name="Email"
+                value={formPerfilEmpresa.Email}
                 onChange={atualizarForm}
                 className="w-full border rounded px-3 py-2"
               />
             </div>
 
             <div className="mb-4">
-              <label htmlFor="cnpj" className="text-0C5E58 block mb-1">
+              <label htmlFor="CNPJ" className="text-0C5E58 block mb-1">
                 CNPJ:
               </label>
               <input
                 type="text"
-                id="cnpj"
-                name="cnpj"
-                value={formPerfilEmpresa.cnpj}
+                id="CNPJ"
+                name="CNPJ"
+                value={formPerfilEmpresa.CNPJ}
                 onChange={atualizarForm}
                 className="w-full border rounded px-3 py-2"
               />
@@ -179,13 +180,13 @@ export default function EditarPerfilEmpresa() {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="uf" className="text-0C5E58 block mb-1">
+            <label htmlFor="UF" className="text-0C5E58 block mb-1">
               UF:
             </label>
             <select
-              id="uf"
-              name="uf"
-              value={formPerfilEmpresa.uf}
+              id="UF"
+              name="UF"
+              value={formPerfilEmpresa.UF}
               onChange={atualizarFormSelect}
               className="w-full border rounded px-3 py-2"
             >
@@ -226,9 +227,9 @@ export default function EditarPerfilEmpresa() {
             </label>
             <input
               type="text"
-              id="cidade"
-              name="cidade"
-              value={formPerfilEmpresa.cidade}
+              id="Cidade"
+              name="Cidade"
+              value={formPerfilEmpresa.Cidade}
               onChange={atualizarForm}
               className="w-full border rounded px-3 py-2"
             />
@@ -240,9 +241,9 @@ export default function EditarPerfilEmpresa() {
             </label>
             <input
               type="text"
-              id="bairro"
-              name="bairro"
-              value={formPerfilEmpresa.bairro}
+              id="Bairro"
+              name="Bairro"
+              value={formPerfilEmpresa.Bairro}
               onChange={atualizarForm}
               className="w-full border rounded px-3 py-2"
             />
@@ -251,14 +252,14 @@ export default function EditarPerfilEmpresa() {
           <hr className="my-6 border-2 border-008C83" />
 
           <div className="mb-4">
-            <label htmlFor="descricao" className="text-0C5E58 block mb-1">
+            <label htmlFor="Descricao" className="text-0C5E58 block mb-1">
               Descrição:
             </label>
             <input
               type="text"
-              id="descricao"
-              name="descricao"
-              value={formPerfilEmpresa.descricao}
+              id="Descricao"
+              name="Descricao"
+              value={formPerfilEmpresa.Descricao}
               onChange={atualizarForm}
               className="w-full border rounded px-3 py-2"
             />
@@ -271,12 +272,18 @@ export default function EditarPerfilEmpresa() {
             >
               Salvar
             </button>
-            <Link href="/empresa/perfil" className="text-cyan-500 font-medium">
-              Cancelar
-            </Link>
+
+            <button
+            type="button"
+            onClick={handleCancelar}
+            className="text-cyan-500 font-medium"
+          >
+            Cancelar
+          </button>
           </div>
         </form>
       </div>
     </div>
+    </>
   );
 }

@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import Rodape from "@/components/commons/rodape";
 import Header from "@/components/commons/headerEmpresa";
 import { ArrowLeft } from "react-feather";
+import VLibras from '@moreiraste/react-vlibras';
+
 
 // o que vai ser passado para o card de vaga em andamento da empresa
 interface Job {
@@ -13,8 +14,7 @@ interface Job {
   TituloCargo: string;
   NomeFantasia: string;
   DescricaoVaga: string;
-  onFinalizarClick: () => void;
-}
+  onFinalizarClick: (IdVaga: string) => void;}
 
 // card da vaga em andamento da empresa
 const JobCard: React.FC<Job> = ({
@@ -24,24 +24,29 @@ const JobCard: React.FC<Job> = ({
   DescricaoVaga,
   onFinalizarClick,
 })  => {
-  const handleFinalizarClick = () => {
+  
+  const handleFinalizarClick: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    // Evite que o formulário seja enviado (se estiver dentro de um formulário)
+    event.preventDefault();
+    // Chame a função onFinalizarClick com IdVaga
     onFinalizarClick(IdVaga);
   };
+
   return (
 <div className="max-w-4xl mx-auto my-4">
   <div className="w-3/4 mx-auto bg-slate-100 rounded-lg overflow-hidden shadow-2xl flex">
     <div className="w-3/4 p-4">
-      <Link href={`/empresa/descricaoVaga/${IdVaga}`}>
+      <Link href={`/empresa/descricaoVaga?IdVaga=${IdVaga}`}>
         <div className="text-3xl font-bold">{TituloCargo}</div>
       </Link>
       <div className="text-lg text-teal-600">{NomeFantasia}</div>
       <div className="mt-4 text-gray-800"> Descrição: {DescricaoVaga}</div>
 
       <div className="mt-4 flex justify-between">
-      <button onClick={onFinalizarClick} className="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded ">
+      <button onClick={handleFinalizarClick} className="bg-red-500 text-white hover:bg-red-600 px-4 py-2 rounded ">
                 Finalizar Vaga
       </button>
-        <Link href={`/empresa/relatorioVaga/${IdVaga}`} className="justify-end">
+        <Link href={`/empresa/relatorioVaga?IdVaga=${IdVaga}`} className="justify-end">
           <button className="hover:underline bg-0D9488 text-white px-4 py-2 rounded w-1/1 ">
             Ver Relatório de Vagas
           </button>
@@ -64,7 +69,7 @@ export default function VagasEmAndamento() {
   const handleFinalizarVaga = async (IdVaga: string) => {
     try {
       await axios.put(
-        `http://10.5.9.20:38000/api/v1/empresas/${Token}/vaga/${IdVaga}/finalizaVaga`,
+        `http://192.168.0.13:38000/api/v1/empresas/${Token}/vaga/${IdVaga}/finalizaVaga`,
         null,
         {
           headers: {
@@ -84,7 +89,7 @@ export default function VagasEmAndamento() {
   useEffect(() => {
     if (Token) {
       axios
-        .get(`http://10.5.9.20:38000/api/v1/empresas/${Token}/status/true/getStatus`, {
+        .get(`http://192.168.0.13:38000/api/v1/empresas/${Token}/status/true/getStatus`, {
           headers: {
             "authorization": "Empcd",
           },}
@@ -113,6 +118,13 @@ export default function VagasEmAndamento() {
 
   return (
     <>
+
+<div className="App">
+      <VLibras forceOnload={true} />
+      <header className="App-header">
+      </header>
+    </div>
+
       <Header />
 
       <div className="bg-white">
@@ -136,7 +148,7 @@ export default function VagasEmAndamento() {
           </div>
         </main>
       </div>
-      <Rodape />
+      
     </>
   );
 }
